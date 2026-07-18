@@ -14,6 +14,107 @@ export type Database = {
   }
   public: {
     Tables: {
+      nutrition_plans: {
+        Row: {
+          ai_model: string | null
+          assessment_id: string | null
+          assigned_menu_kcal: number | null
+          calcium_mg: number | null
+          carbs_g: number | null
+          client_id: string
+          created_at: string
+          disclaimer: string
+          fat_g: number | null
+          fiber_g: number | null
+          generated_by: string | null
+          id: string
+          iron_mg: number | null
+          meal_distribution: Json
+          menu_id: string | null
+          menu_name: string | null
+          observations: string | null
+          org_id: string
+          potassium_mg: number | null
+          protein_g: number | null
+          share_id: string
+          shopping_list: Json
+          sodium_mg: number | null
+          status: string
+          target_kcal: number
+          updated_at: string
+          version: number
+          water_ml: number | null
+        }
+        Insert: {
+          ai_model?: string | null
+          assessment_id?: string | null
+          assigned_menu_kcal?: number | null
+          calcium_mg?: number | null
+          carbs_g?: number | null
+          client_id: string
+          created_at?: string
+          disclaimer?: string
+          fat_g?: number | null
+          fiber_g?: number | null
+          generated_by?: string | null
+          id?: string
+          iron_mg?: number | null
+          meal_distribution?: Json
+          menu_id?: string | null
+          menu_name?: string | null
+          observations?: string | null
+          org_id: string
+          potassium_mg?: number | null
+          protein_g?: number | null
+          share_id?: string
+          shopping_list?: Json
+          sodium_mg?: number | null
+          status?: string
+          target_kcal: number
+          updated_at?: string
+          version?: number
+          water_ml?: number | null
+        }
+        Update: {
+          ai_model?: string | null
+          assessment_id?: string | null
+          assigned_menu_kcal?: number | null
+          calcium_mg?: number | null
+          carbs_g?: number | null
+          client_id?: string
+          created_at?: string
+          disclaimer?: string
+          fat_g?: number | null
+          fiber_g?: number | null
+          generated_by?: string | null
+          id?: string
+          iron_mg?: number | null
+          meal_distribution?: Json
+          menu_id?: string | null
+          menu_name?: string | null
+          observations?: string | null
+          org_id?: string
+          potassium_mg?: number | null
+          protein_g?: number | null
+          share_id?: string
+          shopping_list?: Json
+          sodium_mg?: number | null
+          status?: string
+          target_kcal?: number
+          updated_at?: string
+          version?: number
+          water_ml?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "nutrition_plans_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       organizations: {
         Row: {
           branding: Json
