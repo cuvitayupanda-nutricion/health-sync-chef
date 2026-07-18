@@ -9,38 +9,227 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
+import { Route as AuthenticatedPlansIndexRouteImport } from './routes/_authenticated/plans/index'
+import { Route as AuthenticatedNutritionEngineIndexRouteImport } from './routes/_authenticated/nutrition-engine/index'
+import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard/index'
+import { Route as AuthenticatedClientsIndexRouteImport } from './routes/_authenticated/clients/index'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
+import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin/users'
+import { Route as AuthenticatedAdminTrainersRouteImport } from './routes/_authenticated/admin/trainers'
+import { Route as AuthenticatedAdminRecipesRouteImport } from './routes/_authenticated/admin/recipes'
+import { Route as AuthenticatedAdminMenusRouteImport } from './routes/_authenticated/admin/menus'
+import { Route as AuthenticatedAdminGymsRouteImport } from './routes/_authenticated/admin/gyms'
+import { Route as AuthenticatedAdminFoodsRouteImport } from './routes/_authenticated/admin/foods'
 
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedSettingsIndexRoute =
+  AuthenticatedSettingsIndexRouteImport.update({
+    id: '/settings/',
+    path: '/settings/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPlansIndexRoute = AuthenticatedPlansIndexRouteImport.update({
+  id: '/plans/',
+  path: '/plans/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedNutritionEngineIndexRoute =
+  AuthenticatedNutritionEngineIndexRouteImport.update({
+    id: '/nutrition-engine/',
+    path: '/nutrition-engine/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedDashboardIndexRoute =
+  AuthenticatedDashboardIndexRouteImport.update({
+    id: '/dashboard/',
+    path: '/dashboard/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedClientsIndexRoute =
+  AuthenticatedClientsIndexRouteImport.update({
+    id: '/clients/',
+    path: '/clients/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
+  id: '/admin/users',
+  path: '/admin/users',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminTrainersRoute =
+  AuthenticatedAdminTrainersRouteImport.update({
+    id: '/admin/trainers',
+    path: '/admin/trainers',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdminRecipesRoute =
+  AuthenticatedAdminRecipesRouteImport.update({
+    id: '/admin/recipes',
+    path: '/admin/recipes',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdminMenusRoute = AuthenticatedAdminMenusRouteImport.update({
+  id: '/admin/menus',
+  path: '/admin/menus',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminGymsRoute = AuthenticatedAdminGymsRouteImport.update({
+  id: '/admin/gyms',
+  path: '/admin/gyms',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminFoodsRoute = AuthenticatedAdminFoodsRouteImport.update({
+  id: '/admin/foods',
+  path: '/admin/foods',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/admin/foods': typeof AuthenticatedAdminFoodsRoute
+  '/admin/gyms': typeof AuthenticatedAdminGymsRoute
+  '/admin/menus': typeof AuthenticatedAdminMenusRoute
+  '/admin/recipes': typeof AuthenticatedAdminRecipesRoute
+  '/admin/trainers': typeof AuthenticatedAdminTrainersRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/clients/': typeof AuthenticatedClientsIndexRoute
+  '/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/nutrition-engine/': typeof AuthenticatedNutritionEngineIndexRoute
+  '/plans/': typeof AuthenticatedPlansIndexRoute
+  '/settings/': typeof AuthenticatedSettingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/admin/foods': typeof AuthenticatedAdminFoodsRoute
+  '/admin/gyms': typeof AuthenticatedAdminGymsRoute
+  '/admin/menus': typeof AuthenticatedAdminMenusRoute
+  '/admin/recipes': typeof AuthenticatedAdminRecipesRoute
+  '/admin/trainers': typeof AuthenticatedAdminTrainersRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
+  '/clients': typeof AuthenticatedClientsIndexRoute
+  '/dashboard': typeof AuthenticatedDashboardIndexRoute
+  '/nutrition-engine': typeof AuthenticatedNutritionEngineIndexRoute
+  '/plans': typeof AuthenticatedPlansIndexRoute
+  '/settings': typeof AuthenticatedSettingsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/admin/foods': typeof AuthenticatedAdminFoodsRoute
+  '/_authenticated/admin/gyms': typeof AuthenticatedAdminGymsRoute
+  '/_authenticated/admin/menus': typeof AuthenticatedAdminMenusRoute
+  '/_authenticated/admin/recipes': typeof AuthenticatedAdminRecipesRoute
+  '/_authenticated/admin/trainers': typeof AuthenticatedAdminTrainersRoute
+  '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/_authenticated/clients/': typeof AuthenticatedClientsIndexRoute
+  '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/_authenticated/nutrition-engine/': typeof AuthenticatedNutritionEngineIndexRoute
+  '/_authenticated/plans/': typeof AuthenticatedPlansIndexRoute
+  '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/admin/foods'
+    | '/admin/gyms'
+    | '/admin/menus'
+    | '/admin/recipes'
+    | '/admin/trainers'
+    | '/admin/users'
+    | '/admin/'
+    | '/clients/'
+    | '/dashboard/'
+    | '/nutrition-engine/'
+    | '/plans/'
+    | '/settings/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/admin/foods'
+    | '/admin/gyms'
+    | '/admin/menus'
+    | '/admin/recipes'
+    | '/admin/trainers'
+    | '/admin/users'
+    | '/admin'
+    | '/clients'
+    | '/dashboard'
+    | '/nutrition-engine'
+    | '/plans'
+    | '/settings'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/admin/foods'
+    | '/_authenticated/admin/gyms'
+    | '/_authenticated/admin/menus'
+    | '/_authenticated/admin/recipes'
+    | '/_authenticated/admin/trainers'
+    | '/_authenticated/admin/users'
+    | '/_authenticated/admin/'
+    | '/_authenticated/clients/'
+    | '/_authenticated/dashboard/'
+    | '/_authenticated/nutrition-engine/'
+    | '/_authenticated/plans/'
+    | '/_authenticated/settings/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +237,132 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/settings/': {
+      id: '/_authenticated/settings/'
+      path: '/settings'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof AuthenticatedSettingsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/plans/': {
+      id: '/_authenticated/plans/'
+      path: '/plans'
+      fullPath: '/plans/'
+      preLoaderRoute: typeof AuthenticatedPlansIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/nutrition-engine/': {
+      id: '/_authenticated/nutrition-engine/'
+      path: '/nutrition-engine'
+      fullPath: '/nutrition-engine/'
+      preLoaderRoute: typeof AuthenticatedNutritionEngineIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard/': {
+      id: '/_authenticated/dashboard/'
+      path: '/dashboard'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/clients/': {
+      id: '/_authenticated/clients/'
+      path: '/clients'
+      fullPath: '/clients/'
+      preLoaderRoute: typeof AuthenticatedClientsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/users': {
+      id: '/_authenticated/admin/users'
+      path: '/admin/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AuthenticatedAdminUsersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/trainers': {
+      id: '/_authenticated/admin/trainers'
+      path: '/admin/trainers'
+      fullPath: '/admin/trainers'
+      preLoaderRoute: typeof AuthenticatedAdminTrainersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/recipes': {
+      id: '/_authenticated/admin/recipes'
+      path: '/admin/recipes'
+      fullPath: '/admin/recipes'
+      preLoaderRoute: typeof AuthenticatedAdminRecipesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/menus': {
+      id: '/_authenticated/admin/menus'
+      path: '/admin/menus'
+      fullPath: '/admin/menus'
+      preLoaderRoute: typeof AuthenticatedAdminMenusRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/gyms': {
+      id: '/_authenticated/admin/gyms'
+      path: '/admin/gyms'
+      fullPath: '/admin/gyms'
+      preLoaderRoute: typeof AuthenticatedAdminGymsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/foods': {
+      id: '/_authenticated/admin/foods'
+      path: '/admin/foods'
+      fullPath: '/admin/foods'
+      preLoaderRoute: typeof AuthenticatedAdminFoodsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminFoodsRoute: typeof AuthenticatedAdminFoodsRoute
+  AuthenticatedAdminGymsRoute: typeof AuthenticatedAdminGymsRoute
+  AuthenticatedAdminMenusRoute: typeof AuthenticatedAdminMenusRoute
+  AuthenticatedAdminRecipesRoute: typeof AuthenticatedAdminRecipesRoute
+  AuthenticatedAdminTrainersRoute: typeof AuthenticatedAdminTrainersRoute
+  AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+  AuthenticatedClientsIndexRoute: typeof AuthenticatedClientsIndexRoute
+  AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
+  AuthenticatedNutritionEngineIndexRoute: typeof AuthenticatedNutritionEngineIndexRoute
+  AuthenticatedPlansIndexRoute: typeof AuthenticatedPlansIndexRoute
+  AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminFoodsRoute: AuthenticatedAdminFoodsRoute,
+  AuthenticatedAdminGymsRoute: AuthenticatedAdminGymsRoute,
+  AuthenticatedAdminMenusRoute: AuthenticatedAdminMenusRoute,
+  AuthenticatedAdminRecipesRoute: AuthenticatedAdminRecipesRoute,
+  AuthenticatedAdminTrainersRoute: AuthenticatedAdminTrainersRoute,
+  AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+  AuthenticatedClientsIndexRoute: AuthenticatedClientsIndexRoute,
+  AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
+  AuthenticatedNutritionEngineIndexRoute:
+    AuthenticatedNutritionEngineIndexRoute,
+  AuthenticatedPlansIndexRoute: AuthenticatedPlansIndexRoute,
+  AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
