@@ -27,9 +27,7 @@ export function BrandMark({ className, showWordmark = true, size = "md" }: Brand
       </div>
       {showWordmark && (
         <div className={cn("flex flex-col leading-tight", s.text)}>
-          <span className="text-display font-semibold tracking-tight text-foreground">
-            7RISE
-          </span>
+          <span className="text-display font-semibold tracking-tight text-foreground">7RISE</span>
           <span className="text-[0.7em] font-medium tracking-wide text-muted-foreground uppercase">
             Nutrition Engine
           </span>

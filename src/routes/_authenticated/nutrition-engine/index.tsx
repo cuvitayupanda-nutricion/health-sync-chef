@@ -55,23 +55,21 @@ function EnginePage() {
             Food Photo Analysis
           </h4>
           <p className="mt-1.5 text-sm text-muted-foreground">
-            Reconocimiento de alimentos por fotografía. Preparado en la arquitectura,
-            en desarrollo futuro.
+            Reconocimiento de alimentos por fotografía. Preparado en la arquitectura, en desarrollo
+            futuro.
           </p>
           <span className="mt-3 inline-flex items-center rounded-full bg-muted px-3 py-1 text-[0.7rem] font-medium text-muted-foreground">
             Future module
           </span>
         </div>
         <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
-          <p className="text-xs font-medium tracking-widest text-primary uppercase">
-            IA
-          </p>
+          <p className="text-xs font-medium tracking-widest text-primary uppercase">IA</p>
           <h4 className="text-display mt-2 text-lg font-semibold text-foreground">
             Solo explicaciones
           </h4>
           <p className="mt-1.5 text-sm text-muted-foreground">
-            El módulo de IA únicamente explica las recomendaciones en lenguaje humano.
-            Nunca decide macros ni sustituye al motor.
+            El módulo de IA únicamente explica las recomendaciones en lenguaje humano. Nunca decide
+            macros ni sustituye al motor.
           </p>
         </div>
       </div>

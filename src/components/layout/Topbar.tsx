@@ -26,9 +26,7 @@ export function Topbar({ title, subtitle, actions }: TopbarProps) {
             {title}
           </h1>
         )}
-        {subtitle && (
-          <p className="truncate text-xs text-muted-foreground">{subtitle}</p>
-        )}
+        {subtitle && <p className="truncate text-xs text-muted-foreground">{subtitle}</p>}
       </div>
       <div className="flex items-center gap-2">
         {actions}

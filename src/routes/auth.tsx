@@ -16,6 +16,7 @@ const searchSchema = z.object({
 });
 
 export const Route = createFileRoute("/auth")({
+  ssr: false,
   validateSearch: (search) => searchSchema.parse(search),
   component: AuthPage,
 });
@@ -101,11 +102,7 @@ function AuthPage() {
             onClick={handleGoogle}
             disabled={googleLoading || loading}
           >
-            {googleLoading ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <GoogleIcon />
-            )}
+            {googleLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <GoogleIcon />}
             Continuar con Google
           </Button>
 

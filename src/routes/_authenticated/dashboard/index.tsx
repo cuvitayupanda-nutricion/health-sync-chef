@@ -30,10 +30,32 @@ function DashboardPage() {
       />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatTile label="Clientes activos" value="—" hint="Últimos 30 días" icon={<Users className="h-4 w-4" />} />
-        <StatTile label="Planes generados" value="—" hint="Este mes" icon={<ClipboardList className="h-4 w-4" />} accent="primary" />
-        <StatTile label="Objetivo más frecuente" value="—" hint="Distribución global" icon={<Target className="h-4 w-4" />} />
-        <StatTile label="Crecimiento" value="—" hint="vs. mes anterior" icon={<TrendingUp className="h-4 w-4" />} accent="muted" />
+        <StatTile
+          label="Clientes activos"
+          value="—"
+          hint="Últimos 30 días"
+          icon={<Users className="h-4 w-4" />}
+        />
+        <StatTile
+          label="Planes generados"
+          value="—"
+          hint="Este mes"
+          icon={<ClipboardList className="h-4 w-4" />}
+          accent="primary"
+        />
+        <StatTile
+          label="Objetivo más frecuente"
+          value="—"
+          hint="Distribución global"
+          icon={<Target className="h-4 w-4" />}
+        />
+        <StatTile
+          label="Crecimiento"
+          value="—"
+          hint="vs. mes anterior"
+          icon={<TrendingUp className="h-4 w-4" />}
+          accent="muted"
+        />
       </div>
 
       <div className="mt-8 grid gap-4 lg:grid-cols-2">

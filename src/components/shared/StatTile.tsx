@@ -10,7 +10,14 @@ interface StatTileProps {
   accent?: "default" | "primary" | "muted";
 }
 
-export function StatTile({ label, value, hint, icon, className, accent = "default" }: StatTileProps) {
+export function StatTile({
+  label,
+  value,
+  hint,
+  icon,
+  className,
+  accent = "default",
+}: StatTileProps) {
   return (
     <div
       className={cn(
@@ -21,18 +28,14 @@ export function StatTile({ label, value, hint, icon, className, accent = "defaul
       )}
     >
       <div className="flex items-center justify-between">
-        <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
-          {label}
-        </p>
+        <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">{label}</p>
         {icon && (
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted text-muted-foreground group-hover:text-foreground">
             {icon}
           </span>
         )}
       </div>
-      <div className="text-display text-2xl font-semibold text-foreground md:text-3xl">
-        {value}
-      </div>
+      <div className="text-display text-2xl font-semibold text-foreground md:text-3xl">{value}</div>
       {hint && <p className="text-xs text-muted-foreground">{hint}</p>}
     </div>
   );

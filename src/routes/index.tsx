@@ -42,9 +42,9 @@ function Landing() {
             <span className="text-primary">menos de un minuto.</span>
           </h1>
           <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg">
-            7RISE Nutrition Engine convierte los datos de composición corporal de tus
-            clientes en calorías, macros y menús listos para entregar. Diseñado para
-            gimnasios, entrenadores y centros fitness.
+            7RISE Nutrition Engine convierte los datos de composición corporal de tus clientes en
+            calorías, macros y menús listos para entregar. Diseñado para gimnasios, entrenadores y
+            centros fitness.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
@@ -82,16 +82,11 @@ function Landing() {
               body: "Orientado a adultos sanos. Con disclaimer visible y controlado.",
             },
           ].map(({ icon: Icon, title, body }) => (
-            <div
-              key={title}
-              className="rounded-2xl border border-border bg-card p-6 shadow-soft"
-            >
+            <div key={title} className="rounded-2xl border border-border bg-card p-6 shadow-soft">
               <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent text-primary">
                 <Icon className="h-5 w-5" />
               </span>
-              <h3 className="text-display mt-4 text-lg font-semibold text-foreground">
-                {title}
-              </h3>
+              <h3 className="text-display mt-4 text-lg font-semibold text-foreground">{title}</h3>
               <p className="mt-1.5 text-sm text-muted-foreground">{body}</p>
             </div>
           ))}

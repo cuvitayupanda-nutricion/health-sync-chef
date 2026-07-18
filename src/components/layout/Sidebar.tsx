@@ -38,11 +38,17 @@ const adminNav: NavItem[] = [
   { to: "/admin/gyms", label: "Gimnasios", icon: Building2 },
 ];
 
-const footerNav: NavItem[] = [
-  { to: "/settings", label: "Configuración", icon: Settings },
-];
+const footerNav: NavItem[] = [{ to: "/settings", label: "Configuración", icon: Settings }];
 
-function NavGroup({ label, items, currentPath }: { label?: string; items: NavItem[]; currentPath: string }) {
+function NavGroup({
+  label,
+  items,
+  currentPath,
+}: {
+  label?: string;
+  items: NavItem[];
+  currentPath: string;
+}) {
   return (
     <div className="space-y-1">
       {label && (

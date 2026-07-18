@@ -32,9 +32,7 @@ function SettingsPage() {
               <Icon className="h-4 w-4" />
             </span>
             <div>
-              <h3 className="text-display text-base font-semibold text-foreground">
-                {title}
-              </h3>
+              <h3 className="text-display text-base font-semibold text-foreground">{title}</h3>
               <p className="mt-1 text-sm text-muted-foreground">{description}</p>
             </div>
             <Settings className="ml-auto h-4 w-4 shrink-0 text-muted-foreground opacity-0 transition group-hover:opacity-100" />

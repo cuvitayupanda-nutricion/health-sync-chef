@@ -4,12 +4,7 @@
  */
 
 export type Sex = "male" | "female";
-export type ActivityLevel =
-  | "sedentary"
-  | "light"
-  | "moderate"
-  | "active"
-  | "very_active";
+export type ActivityLevel = "sedentary" | "light" | "moderate" | "active" | "very_active";
 export type NutritionGoal = "lose_fat" | "maintain" | "gain_muscle";
 export type CalcMethod = "mifflin_st_jeor" | "katch_mcardle" | "harris_benedict";
 
@@ -28,12 +23,7 @@ export const GOAL_ADJUSTMENT: Record<NutritionGoal, number> = {
 };
 
 /** Mifflin-St Jeor — recomendado por defecto. */
-export function bmrMifflin(
-  weightKg: number,
-  heightCm: number,
-  age: number,
-  sex: Sex,
-): number {
+export function bmrMifflin(weightKg: number, heightCm: number, age: number, sex: Sex): number {
   const base = 10 * weightKg + 6.25 * heightCm - 5 * age;
   return sex === "male" ? base + 5 : base - 161;
 }
@@ -45,12 +35,7 @@ export function bmrKatch(weightKg: number, bodyFatPct: number): number {
 }
 
 /** Harris-Benedict revisado (1984). */
-export function bmrHarris(
-  weightKg: number,
-  heightCm: number,
-  age: number,
-  sex: Sex,
-): number {
+export function bmrHarris(weightKg: number, heightCm: number, age: number, sex: Sex): number {
   return sex === "male"
     ? 88.362 + 13.397 * weightKg + 4.799 * heightCm - 5.677 * age
     : 447.593 + 9.247 * weightKg + 3.098 * heightCm - 4.33 * age;

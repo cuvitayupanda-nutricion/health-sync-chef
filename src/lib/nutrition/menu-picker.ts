@@ -10,10 +10,7 @@ export interface MenuCandidate {
   total_kcal: number;
 }
 
-export function pickClosestMenu<T extends MenuCandidate>(
-  targetKcal: number,
-  menus: T[],
-): T | null {
+export function pickClosestMenu<T extends MenuCandidate>(targetKcal: number, menus: T[]): T | null {
   if (menus.length === 0) return null;
   let best = menus[0];
   let bestDelta = Math.abs(best.total_kcal - targetKcal);

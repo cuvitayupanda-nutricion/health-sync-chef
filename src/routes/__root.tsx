@@ -18,9 +18,7 @@ function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <p className="text-sm font-medium tracking-widest text-muted-foreground uppercase">
-          404
-        </p>
+        <p className="text-sm font-medium tracking-widest text-muted-foreground uppercase">404</p>
         <h1 className="mt-3 text-3xl font-semibold tracking-tight text-foreground">
           Página no encontrada
         </h1>
@@ -50,9 +48,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          Algo salió mal
-        </h1>
+        <h1 className="text-xl font-semibold tracking-tight text-foreground">Algo salió mal</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Intenta recargar la página o vuelve al inicio.
         </p>
@@ -140,12 +136,7 @@ function RootComponent() {
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((event) => {
-      if (
-        event !== "SIGNED_IN" &&
-        event !== "SIGNED_OUT" &&
-        event !== "USER_UPDATED"
-      )
-        return;
+      if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
       router.invalidate();
       if (event !== "SIGNED_OUT") queryClient.invalidateQueries();
     });
