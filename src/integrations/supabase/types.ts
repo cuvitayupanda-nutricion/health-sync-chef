@@ -14,6 +14,340 @@ export type Database = {
   }
   public: {
     Tables: {
+      assessments: {
+        Row: {
+          age: number
+          body_fat_pct: number | null
+          calculation_date: string
+          client_id: string
+          created_at: string
+          get_calculation_method: Database["public"]["Enums"]["calc_method"]
+          height_cm: number
+          id: string
+          muscle_mass_kg: number | null
+          nutrition_goal: Database["public"]["Enums"]["nutrition_goal"]
+          org_id: string
+          physical_activity_level: Database["public"]["Enums"]["activity_level"]
+          raw_payload: Json | null
+          sex: Database["public"]["Enums"]["sex_type"]
+          source: string
+          updated_at: string
+          visceral_fat: number | null
+          weight_kg: number
+        }
+        Insert: {
+          age: number
+          body_fat_pct?: number | null
+          calculation_date?: string
+          client_id: string
+          created_at?: string
+          get_calculation_method?: Database["public"]["Enums"]["calc_method"]
+          height_cm: number
+          id?: string
+          muscle_mass_kg?: number | null
+          nutrition_goal?: Database["public"]["Enums"]["nutrition_goal"]
+          org_id: string
+          physical_activity_level?: Database["public"]["Enums"]["activity_level"]
+          raw_payload?: Json | null
+          sex: Database["public"]["Enums"]["sex_type"]
+          source?: string
+          updated_at?: string
+          visceral_fat?: number | null
+          weight_kg: number
+        }
+        Update: {
+          age?: number
+          body_fat_pct?: number | null
+          calculation_date?: string
+          client_id?: string
+          created_at?: string
+          get_calculation_method?: Database["public"]["Enums"]["calc_method"]
+          height_cm?: number
+          id?: string
+          muscle_mass_kg?: number | null
+          nutrition_goal?: Database["public"]["Enums"]["nutrition_goal"]
+          org_id?: string
+          physical_activity_level?: Database["public"]["Enums"]["activity_level"]
+          raw_payload?: Json | null
+          sex?: Database["public"]["Enums"]["sex_type"]
+          source?: string
+          updated_at?: string
+          visceral_fat?: number | null
+          weight_kg?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assessments_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assessments_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      clients: {
+        Row: {
+          birth_date: string | null
+          created_at: string
+          email: string | null
+          external_id: string | null
+          full_name: string
+          id: string
+          notes: string | null
+          org_id: string
+          phone: string | null
+          sex: Database["public"]["Enums"]["sex_type"] | null
+          trainer_id: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          birth_date?: string | null
+          created_at?: string
+          email?: string | null
+          external_id?: string | null
+          full_name: string
+          id?: string
+          notes?: string | null
+          org_id: string
+          phone?: string | null
+          sex?: Database["public"]["Enums"]["sex_type"] | null
+          trainer_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          birth_date?: string | null
+          created_at?: string
+          email?: string | null
+          external_id?: string | null
+          full_name?: string
+          id?: string
+          notes?: string | null
+          org_id?: string
+          phone?: string | null
+          sex?: Database["public"]["Enums"]["sex_type"] | null
+          trainer_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clients_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      foods: {
+        Row: {
+          allergens: string[] | null
+          calcium_mg_per_100g: number | null
+          carbs_g_per_100g: number
+          category: string | null
+          created_at: string
+          fat_g_per_100g: number
+          fiber_g_per_100g: number | null
+          id: string
+          iron_mg_per_100g: number | null
+          is_active: boolean
+          kcal_per_100g: number
+          name: string
+          name_es: string | null
+          potassium_mg_per_100g: number | null
+          protein_g_per_100g: number
+          sodium_mg_per_100g: number | null
+          source: Database["public"]["Enums"]["food_source"]
+          source_code: string | null
+          tags: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          allergens?: string[] | null
+          calcium_mg_per_100g?: number | null
+          carbs_g_per_100g?: number
+          category?: string | null
+          created_at?: string
+          fat_g_per_100g?: number
+          fiber_g_per_100g?: number | null
+          id?: string
+          iron_mg_per_100g?: number | null
+          is_active?: boolean
+          kcal_per_100g: number
+          name: string
+          name_es?: string | null
+          potassium_mg_per_100g?: number | null
+          protein_g_per_100g?: number
+          sodium_mg_per_100g?: number | null
+          source?: Database["public"]["Enums"]["food_source"]
+          source_code?: string | null
+          tags?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          allergens?: string[] | null
+          calcium_mg_per_100g?: number | null
+          carbs_g_per_100g?: number
+          category?: string | null
+          created_at?: string
+          fat_g_per_100g?: number
+          fiber_g_per_100g?: number | null
+          id?: string
+          iron_mg_per_100g?: number | null
+          is_active?: boolean
+          kcal_per_100g?: number
+          name?: string
+          name_es?: string | null
+          potassium_mg_per_100g?: number | null
+          protein_g_per_100g?: number
+          sodium_mg_per_100g?: number | null
+          source?: Database["public"]["Enums"]["food_source"]
+          source_code?: string | null
+          tags?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      menu_slot_options: {
+        Row: {
+          created_at: string
+          id: string
+          option_kcal: number | null
+          order_index: number
+          recipe_id: string
+          serving_grams: number | null
+          slot_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          option_kcal?: number | null
+          order_index?: number
+          recipe_id: string
+          serving_grams?: number | null
+          slot_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          option_kcal?: number | null
+          order_index?: number
+          recipe_id?: string
+          serving_grams?: number | null
+          slot_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "menu_slot_options_recipe_id_fkey"
+            columns: ["recipe_id"]
+            isOneToOne: false
+            referencedRelation: "recipes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "menu_slot_options_slot_id_fkey"
+            columns: ["slot_id"]
+            isOneToOne: false
+            referencedRelation: "menu_slots"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      menu_slots: {
+        Row: {
+          created_at: string
+          id: string
+          menu_id: string
+          name: string
+          order_index: number
+          slot_type: Database["public"]["Enums"]["meal_slot_type"]
+          target_kcal: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          menu_id: string
+          name: string
+          order_index?: number
+          slot_type: Database["public"]["Enums"]["meal_slot_type"]
+          target_kcal?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          menu_id?: string
+          name?: string
+          order_index?: number
+          slot_type?: Database["public"]["Enums"]["meal_slot_type"]
+          target_kcal?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "menu_slots_menu_id_fkey"
+            columns: ["menu_id"]
+            isOneToOne: false
+            referencedRelation: "menus"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      menus: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          kcal_level: number
+          name: string
+          tags: string[] | null
+          total_carbs_g: number
+          total_fat_g: number
+          total_fiber_g: number | null
+          total_kcal: number
+          total_protein_g: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          kcal_level: number
+          name: string
+          tags?: string[] | null
+          total_carbs_g?: number
+          total_fat_g?: number
+          total_fiber_g?: number | null
+          total_kcal: number
+          total_protein_g?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          kcal_level?: number
+          name?: string
+          tags?: string[] | null
+          total_carbs_g?: number
+          total_fat_g?: number
+          total_fiber_g?: number | null
+          total_kcal?: number
+          total_protein_g?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       nutrition_plans: {
         Row: {
           ai_model: string | null
@@ -177,6 +511,105 @@ export type Database = {
           },
         ]
       }
+      recipe_ingredients: {
+        Row: {
+          created_at: string
+          food_id: string
+          grams: number
+          id: string
+          notes: string | null
+          order_index: number
+          recipe_id: string
+        }
+        Insert: {
+          created_at?: string
+          food_id: string
+          grams: number
+          id?: string
+          notes?: string | null
+          order_index?: number
+          recipe_id: string
+        }
+        Update: {
+          created_at?: string
+          food_id?: string
+          grams?: number
+          id?: string
+          notes?: string | null
+          order_index?: number
+          recipe_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recipe_ingredients_food_id_fkey"
+            columns: ["food_id"]
+            isOneToOne: false
+            referencedRelation: "foods"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recipe_ingredients_recipe_id_fkey"
+            columns: ["recipe_id"]
+            isOneToOne: false
+            referencedRelation: "recipes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      recipes: {
+        Row: {
+          allergens: string[] | null
+          cook_time_min: number | null
+          cost_estimate: number | null
+          created_at: string
+          description: string | null
+          difficulty: Database["public"]["Enums"]["recipe_difficulty"]
+          id: string
+          image_url: string | null
+          instructions: string | null
+          is_active: boolean
+          name: string
+          prep_time_min: number | null
+          servings: number
+          tags: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          allergens?: string[] | null
+          cook_time_min?: number | null
+          cost_estimate?: number | null
+          created_at?: string
+          description?: string | null
+          difficulty?: Database["public"]["Enums"]["recipe_difficulty"]
+          id?: string
+          image_url?: string | null
+          instructions?: string | null
+          is_active?: boolean
+          name: string
+          prep_time_min?: number | null
+          servings?: number
+          tags?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          allergens?: string[] | null
+          cook_time_min?: number | null
+          cost_estimate?: number | null
+          created_at?: string
+          description?: string | null
+          difficulty?: Database["public"]["Enums"]["recipe_difficulty"]
+          id?: string
+          image_url?: string | null
+          instructions?: string | null
+          is_active?: boolean
+          name?: string
+          prep_time_min?: number | null
+          servings?: number
+          tags?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -231,7 +664,26 @@ export type Database = {
       }
     }
     Enums: {
+      activity_level:
+        | "sedentary"
+        | "light"
+        | "moderate"
+        | "active"
+        | "very_active"
       app_role: "super_admin" | "gym_admin" | "trainer" | "client"
+      calc_method: "mifflin_st_jeor" | "katch_mcardle" | "harris_benedict"
+      food_source: "usda" | "fao" | "bedca" | "ecuador" | "custom"
+      meal_slot_type:
+        | "breakfast"
+        | "mid_morning"
+        | "lunch"
+        | "snack"
+        | "dinner"
+        | "post_workout"
+        | "pre_workout"
+      nutrition_goal: "lose_fat" | "maintain" | "gain_muscle"
+      recipe_difficulty: "easy" | "medium" | "hard"
+      sex_type: "male" | "female"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -359,7 +811,28 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      activity_level: [
+        "sedentary",
+        "light",
+        "moderate",
+        "active",
+        "very_active",
+      ],
       app_role: ["super_admin", "gym_admin", "trainer", "client"],
+      calc_method: ["mifflin_st_jeor", "katch_mcardle", "harris_benedict"],
+      food_source: ["usda", "fao", "bedca", "ecuador", "custom"],
+      meal_slot_type: [
+        "breakfast",
+        "mid_morning",
+        "lunch",
+        "snack",
+        "dinner",
+        "post_workout",
+        "pre_workout",
+      ],
+      nutrition_goal: ["lose_fat", "maintain", "gain_muscle"],
+      recipe_difficulty: ["easy", "medium", "hard"],
+      sex_type: ["male", "female"],
     },
   },
 } as const
