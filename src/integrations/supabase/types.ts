@@ -8,6 +8,42 @@ export type Database = {
   };
   public: {
     Tables: {
+      ai_modules: {
+        Row: {
+          created_at: string;
+          description: string | null;
+          future_module: boolean;
+          id: string;
+          metadata: Json;
+          module_key: string;
+          name: string;
+          status: string;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          description?: string | null;
+          future_module?: boolean;
+          id?: string;
+          metadata?: Json;
+          module_key: string;
+          name: string;
+          status?: string;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          description?: string | null;
+          future_module?: boolean;
+          id?: string;
+          metadata?: Json;
+          module_key?: string;
+          name?: string;
+          status?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       assessments: {
         Row: {
           age: number;
@@ -149,6 +185,9 @@ export type Database = {
           carbs_g_per_100g: number;
           category: string | null;
           created_at: string;
+          brand_name: string | null;
+          data_source_id: string | null;
+          external_metadata: Json;
           fat_g_per_100g: number;
           fiber_g_per_100g: number | null;
           id: string;
@@ -171,6 +210,9 @@ export type Database = {
           carbs_g_per_100g?: number;
           category?: string | null;
           created_at?: string;
+          brand_name?: string | null;
+          data_source_id?: string | null;
+          external_metadata?: Json;
           fat_g_per_100g?: number;
           fiber_g_per_100g?: number | null;
           id?: string;
@@ -193,6 +235,9 @@ export type Database = {
           carbs_g_per_100g?: number;
           category?: string | null;
           created_at?: string;
+          brand_name?: string | null;
+          data_source_id?: string | null;
+          external_metadata?: Json;
           fat_g_per_100g?: number;
           fiber_g_per_100g?: number | null;
           id?: string;
@@ -209,7 +254,81 @@ export type Database = {
           tags?: string[] | null;
           updated_at?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "foods_data_source_id_fkey";
+            columns: ["data_source_id"];
+            isOneToOne: false;
+            referencedRelation: "nutrition_data_sources";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      meal_options: {
+        Row: {
+          created_at: string;
+          id: string;
+          is_active: boolean;
+          kcal_level: number;
+          kcal_level_id: string;
+          meal_type: Database["public"]["Enums"]["meal_slot_type"];
+          metadata: Json;
+          name: string;
+          order_index: number;
+          recipe_id: string | null;
+          serving_grams: number | null;
+          tags: string[] | null;
+          target_kcal: number | null;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          is_active?: boolean;
+          kcal_level: number;
+          kcal_level_id: string;
+          meal_type: Database["public"]["Enums"]["meal_slot_type"];
+          metadata?: Json;
+          name: string;
+          order_index?: number;
+          recipe_id?: string | null;
+          serving_grams?: number | null;
+          tags?: string[] | null;
+          target_kcal?: number | null;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          is_active?: boolean;
+          kcal_level?: number;
+          kcal_level_id?: string;
+          meal_type?: Database["public"]["Enums"]["meal_slot_type"];
+          metadata?: Json;
+          name?: string;
+          order_index?: number;
+          recipe_id?: string | null;
+          serving_grams?: number | null;
+          tags?: string[] | null;
+          target_kcal?: number | null;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "meal_options_kcal_level_id_fkey";
+            columns: ["kcal_level_id"];
+            isOneToOne: false;
+            referencedRelation: "menu_calorie_levels";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "meal_options_recipe_id_fkey";
+            columns: ["recipe_id"];
+            isOneToOne: false;
+            referencedRelation: "recipes";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       menu_slot_options: {
         Row: {
@@ -342,6 +461,39 @@ export type Database = {
         };
         Relationships: [];
       };
+      menu_calorie_levels: {
+        Row: {
+          created_at: string;
+          description: string | null;
+          id: string;
+          is_active: boolean;
+          kcal_level: number;
+          label: string;
+          metadata: Json;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          is_active?: boolean;
+          kcal_level: number;
+          label: string;
+          metadata?: Json;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          is_active?: boolean;
+          kcal_level?: number;
+          label?: string;
+          metadata?: Json;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       nutrition_plans: {
         Row: {
           ai_model: string | null;
@@ -352,9 +504,11 @@ export type Database = {
           client_id: string;
           created_at: string;
           disclaimer: string;
+          diet_type: string;
           fat_g: number | null;
           fiber_g: number | null;
           generated_by: string | null;
+          goal_type: Database["public"]["Enums"]["nutrition_goal"];
           id: string;
           iron_mg: number | null;
           meal_distribution: Json;
@@ -382,9 +536,11 @@ export type Database = {
           client_id: string;
           created_at?: string;
           disclaimer?: string;
+          diet_type?: string;
           fat_g?: number | null;
           fiber_g?: number | null;
           generated_by?: string | null;
+          goal_type?: Database["public"]["Enums"]["nutrition_goal"];
           id?: string;
           iron_mg?: number | null;
           meal_distribution?: Json;
@@ -412,9 +568,11 @@ export type Database = {
           client_id?: string;
           created_at?: string;
           disclaimer?: string;
+          diet_type?: string;
           fat_g?: number | null;
           fiber_g?: number | null;
           generated_by?: string | null;
+          goal_type?: Database["public"]["Enums"]["nutrition_goal"];
           id?: string;
           iron_mg?: number | null;
           meal_distribution?: Json;
@@ -442,6 +600,45 @@ export type Database = {
             referencedColumns: ["id"];
           },
         ];
+      };
+      nutrition_data_sources: {
+        Row: {
+          created_at: string;
+          display_name: string;
+          id: string;
+          is_active: boolean;
+          is_import_enabled: boolean;
+          metadata: Json;
+          provider_url: string | null;
+          region: string | null;
+          source: string;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          display_name: string;
+          id?: string;
+          is_active?: boolean;
+          is_import_enabled?: boolean;
+          metadata?: Json;
+          provider_url?: string | null;
+          region?: string | null;
+          source: string;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          display_name?: string;
+          id?: string;
+          is_active?: boolean;
+          is_import_enabled?: boolean;
+          metadata?: Json;
+          provider_url?: string | null;
+          region?: string | null;
+          source?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
       };
       organizations: {
         Row: {
@@ -561,11 +758,16 @@ export type Database = {
           created_at: string;
           description: string | null;
           difficulty: Database["public"]["Enums"]["recipe_difficulty"];
+          estimated_cost: number | null;
           id: string;
+          image: string | null;
           image_url: string | null;
+          ingredients: Json;
           instructions: string | null;
           is_active: boolean;
           name: string;
+          preparation: string | null;
+          preparation_time: number | null;
           prep_time_min: number | null;
           servings: number;
           tags: string[] | null;
@@ -578,11 +780,16 @@ export type Database = {
           created_at?: string;
           description?: string | null;
           difficulty?: Database["public"]["Enums"]["recipe_difficulty"];
+          estimated_cost?: number | null;
           id?: string;
+          image?: string | null;
           image_url?: string | null;
+          ingredients?: Json;
           instructions?: string | null;
           is_active?: boolean;
           name: string;
+          preparation?: string | null;
+          preparation_time?: number | null;
           prep_time_min?: number | null;
           servings?: number;
           tags?: string[] | null;
@@ -595,11 +802,16 @@ export type Database = {
           created_at?: string;
           description?: string | null;
           difficulty?: Database["public"]["Enums"]["recipe_difficulty"];
+          estimated_cost?: number | null;
           id?: string;
+          image?: string | null;
           image_url?: string | null;
+          ingredients?: Json;
           instructions?: string | null;
           is_active?: boolean;
           name?: string;
+          preparation?: string | null;
+          preparation_time?: number | null;
           prep_time_min?: number | null;
           servings?: number;
           tags?: string[] | null;
@@ -664,7 +876,15 @@ export type Database = {
       activity_level: "sedentary" | "light" | "moderate" | "active" | "very_active";
       app_role: "super_admin" | "gym_admin" | "trainer" | "client";
       calc_method: "mifflin_st_jeor" | "katch_mcardle" | "harris_benedict";
-      food_source: "usda" | "fao" | "bedca" | "ecuador" | "custom";
+      food_source:
+        | "usda"
+        | "fao"
+        | "bedca"
+        | "ecuador"
+        | "latinfoods"
+        | "ecuador_food_table"
+        | "commercial_brand"
+        | "custom";
       meal_slot_type:
         "breakfast" | "mid_morning" | "lunch" | "snack" | "dinner" | "post_workout" | "pre_workout";
       nutrition_goal: "lose_fat" | "maintain" | "gain_muscle";
@@ -794,7 +1014,16 @@ export const Constants = {
       activity_level: ["sedentary", "light", "moderate", "active", "very_active"],
       app_role: ["super_admin", "gym_admin", "trainer", "client"],
       calc_method: ["mifflin_st_jeor", "katch_mcardle", "harris_benedict"],
-      food_source: ["usda", "fao", "bedca", "ecuador", "custom"],
+      food_source: [
+        "usda",
+        "fao",
+        "bedca",
+        "ecuador",
+        "latinfoods",
+        "ecuador_food_table",
+        "commercial_brand",
+        "custom",
+      ],
       meal_slot_type: [
         "breakfast",
         "mid_morning",

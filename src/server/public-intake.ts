@@ -8,7 +8,7 @@ import {
   type NutritionGoal,
   type Sex,
 } from "@/lib/nutrition";
-import { pickClosestMenu } from "@/lib/nutrition/menu-picker";
+import { pickClosestCalorieLevel, pickClosestMenu } from "@/lib/nutrition/menu-picker";
 
 const intakeSchema = z.object({
   org_id: z.string().uuid(),
@@ -125,8 +125,7 @@ async function createNutritionPlan(payload: IntakePayload, rawBody: string) {
     method: payload.assessment.get_calculation_method as CalcMethod,
   });
 
-  const menu = await findClosestMenu(engine.target_kcal);
-  const mealDistribution = menu ? await buildMealDistribution(menu.id) : {};
+  const menuAssignment = await buildMenuAssignment(engine.target_kcal, assessment.id);
 
   const { data: plan, error } = await supabaseAdmin
     .from("nutrition_plans")
@@ -135,7 +134,9 @@ async function createNutritionPlan(payload: IntakePayload, rawBody: string) {
       client_id: client.id,
       assessment_id: assessment.id,
       target_kcal: engine.target_kcal,
-      assigned_menu_kcal: menu?.total_kcal ?? null,
+      goal_type: payload.assessment.nutrition_goal,
+      diet_type: toDietType(payload.assessment.nutrition_goal),
+      assigned_menu_kcal: menuAssignment?.kcal ?? null,
       protein_g: engine.macros.protein_g,
       carbs_g: engine.macros.carbs_g,
       fat_g: engine.macros.fat_g,
@@ -145,10 +146,10 @@ async function createNutritionPlan(payload: IntakePayload, rawBody: string) {
       iron_mg: engine.micros.iron_mg,
       potassium_mg: engine.micros.potassium_mg,
       sodium_mg: engine.micros.sodium_mg,
-      meal_distribution: mealDistribution,
+      meal_distribution: menuAssignment?.meal_distribution ?? {},
       shopping_list: [],
-      menu_id: menu?.id ?? null,
-      menu_name: menu?.name ?? null,
+      menu_id: menuAssignment?.menu_id ?? null,
+      menu_name: menuAssignment?.name ?? null,
       generated_by: payload.generated_by ?? null,
       observations: `BMR ${engine.bmr} kcal; TDEE ${engine.tdee} kcal; metodo ${engine.meta.method}.`,
       status: "draft",
@@ -165,7 +166,13 @@ async function createNutritionPlan(payload: IntakePayload, rawBody: string) {
     assessment_id: assessment.id,
     target_kcal: plan.target_kcal,
     assigned_menu_kcal: plan.assigned_menu_kcal,
-    menu: plan.menu_id ? { id: plan.menu_id, name: plan.menu_name } : null,
+    menu: menuAssignment
+      ? {
+          id: menuAssignment.menu_id,
+          name: menuAssignment.name,
+          source: menuAssignment.source,
+        }
+      : null,
   };
 }
 
@@ -254,6 +261,78 @@ async function findClosestMenu(targetKcal: number) {
   return pickClosestMenu(targetKcal, data ?? []);
 }
 
+async function buildMenuAssignment(targetKcal: number, seed: string) {
+  const optionAssignment = await buildOptionMenuAssignment(targetKcal, seed);
+  if (optionAssignment) return optionAssignment;
+
+  const menu = await findClosestMenu(targetKcal);
+  if (!menu) return null;
+
+  return {
+    source: "legacy_menu" as const,
+    menu_id: menu.id,
+    name: menu.name,
+    kcal: menu.total_kcal,
+    meal_distribution: await buildMealDistribution(menu.id),
+  };
+}
+
+async function buildOptionMenuAssignment(targetKcal: number, seed: string) {
+  const { data: levels, error: levelsError } = await supabaseAdmin
+    .from("menu_calorie_levels")
+    .select("id, kcal_level, label")
+    .eq("is_active", true);
+
+  if (levelsError) throw levelsError;
+  const level = pickClosestCalorieLevel(targetKcal, levels ?? []);
+  if (!level) return null;
+
+  const { data: options, error: optionsError } = await supabaseAdmin
+    .from("meal_options")
+    .select("id, meal_type, recipe_id, name, target_kcal, serving_grams, order_index")
+    .eq("kcal_level_id", level.id)
+    .eq("is_active", true)
+    .order("meal_type", { ascending: true })
+    .order("order_index", { ascending: true });
+
+  if (optionsError) throw optionsError;
+
+  const mealTypes = ["breakfast", "lunch", "snack", "dinner"] as const;
+  const selected = mealTypes
+    .map((mealType, index) => {
+      const candidates = (options ?? []).filter((option) => option.meal_type === mealType);
+      if (candidates.length === 0) return null;
+      const selectedIndex = stableIndex(`${seed}:${mealType}:${index}`, candidates.length);
+      const option = candidates[selectedIndex];
+      return {
+        slot: mealType,
+        name: option.name,
+        target_kcal: option.target_kcal,
+        selected_option: {
+          id: option.id,
+          recipe_id: option.recipe_id,
+          serving_grams: option.serving_grams,
+          kcal: option.target_kcal,
+        },
+      };
+    })
+    .filter((option) => option !== null);
+
+  if (selected.length === 0) return null;
+
+  return {
+    source: "meal_options" as const,
+    menu_id: null,
+    name: `${level.label} option library`,
+    kcal: level.kcal_level,
+    meal_distribution: {
+      source: "meal_options",
+      kcal_level: level.kcal_level,
+      items: selected,
+    },
+  };
+}
+
 async function buildMealDistribution(menuId: string) {
   const { data, error } = await supabaseAdmin
     .from("menu_slots")
@@ -284,6 +363,20 @@ async function buildMealDistribution(menuId: string) {
         : null,
     };
   });
+}
+
+function stableIndex(seed: string, length: number): number {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
+  }
+  return hash % length;
+}
+
+function toDietType(goal: NutritionGoal): "Hipocalórica" | "Normocalórica" | "Hipercalórica" {
+  if (goal === "lose_fat") return "Hipocalórica";
+  if (goal === "gain_muscle") return "Hipercalórica";
+  return "Normocalórica";
 }
 
 async function verifyHmac(rawBody: string, secret: string, signature: string): Promise<boolean> {
