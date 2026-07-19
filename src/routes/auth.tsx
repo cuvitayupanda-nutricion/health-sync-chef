@@ -4,7 +4,6 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,6 +12,16 @@ import { BrandMark } from "@/components/brand/BrandMark";
 const searchSchema = z.object({
   mode: z.enum(["signin", "signup"]).optional(),
   next: z.string().optional(),
+});
+
+const signInSchema = z.object({
+  email: z.string().trim().email("Escribe un correo válido."),
+  password: z.string().min(1, "Escribe tu contraseña."),
+});
+
+const signUpSchema = signInSchema.extend({
+  fullName: z.string().trim().min(2, "Escribe tu nombre completo."),
+  password: z.string().min(8, "La contraseña debe tener al menos 8 caracteres."),
 });
 
 export const Route = createFileRoute("/auth")({
@@ -30,29 +39,56 @@ function AuthPage() {
   const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [formMessage, setFormMessage] = useState<string | null>(null);
+
+  const safeNext = next?.startsWith("/") ? next : "/dashboard";
+  const redirectTo = `${window.location.origin}${safeNext}`;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setFormMessage(null);
     try {
       if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
+        const form = signUpSchema.parse({ email, password, fullName });
+        const { data, error } = await supabase.auth.signUp({
+          email: form.email,
+          password: form.password,
           options: {
-            emailRedirectTo: window.location.origin,
-            data: { full_name: fullName },
+            emailRedirectTo: redirectTo,
+            data: { full_name: form.fullName },
           },
         });
         if (error) throw error;
-        toast.success("Cuenta creada. Revisa tu correo si es necesario.");
+
+        if (!data.session) {
+          const message =
+            "Cuenta creada. Revisa tu correo para confirmar el acceso antes de iniciar sesión.";
+          toast.success(message);
+          setFormMessage(message);
+          setMode("signin");
+          setPassword("");
+          return;
+        }
+
+        toast.success("Cuenta creada. Entraste correctamente.");
       } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const form = signInSchema.parse({ email, password });
+        const { error } = await supabase.auth.signInWithPassword({
+          email: form.email,
+          password: form.password,
+        });
         if (error) throw error;
+        toast.success("Sesión iniciada.");
       }
-      router.navigate({ to: next ?? "/dashboard" });
+      router.navigate({ to: safeNext });
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "No se pudo continuar";
+      const msg =
+        err instanceof z.ZodError
+          ? (err.errors[0]?.message ?? "Revisa los datos del formulario.")
+          : err instanceof Error
+            ? err.message
+            : "No se pudo continuar";
       toast.error(msg);
     } finally {
       setLoading(false);
@@ -62,12 +98,17 @@ function AuthPage() {
   const handleGoogle = async () => {
     setGoogleLoading(true);
     try {
-      const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin,
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo,
+          queryParams: {
+            access_type: "offline",
+            prompt: "select_account",
+          },
+        },
       });
-      if (result.error) throw result.error;
-      if (result.redirected) return;
-      router.navigate({ to: next ?? "/dashboard" });
+      if (error) throw error;
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Error con Google";
       toast.error(msg);
@@ -113,6 +154,11 @@ function AuthPage() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {formMessage && (
+              <div className="rounded-2xl border border-primary/20 bg-primary/5 px-4 py-3 text-sm text-foreground">
+                {formMessage}
+              </div>
+            )}
             {mode === "signup" && (
               <div className="space-y-1.5">
                 <Label htmlFor="fullName">Nombre completo</Label>
@@ -121,6 +167,7 @@ function AuthPage() {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="Nombre y apellido"
+                  autoComplete="name"
                   required
                 />
               </div>
@@ -146,7 +193,7 @@ function AuthPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                minLength={6}
+                minLength={mode === "signup" ? 8 : 1}
                 required
               />
             </div>
