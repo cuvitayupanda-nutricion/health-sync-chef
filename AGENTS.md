@@ -1,12 +1,10 @@
-<!-- LOVABLE:BEGIN -->
-
 > [!IMPORTANT]
-> This project is connected to [Lovable](https://lovable.dev). Avoid rewriting
-> published git history — force pushing, or rebasing/amending/squashing commits
-> that are already pushed — as it rewrites history on Lovable's side and the
-> user will likely lose their project history.
+> This project is now maintained directly from this repository. The previous
+> visual-builder integration is no longer part of the app runtime,
+> authentication flow, or build configuration.
 >
-> Commits you push to the connected branch sync back to Lovable and show up in
-> the editor, so keep the branch in a working state.
-
-<!-- LOVABLE:END -->
+> Use Supabase Auth as the source of truth for email/password and Google OAuth.
+> Keep secrets only in local or deployment environment variables; never commit
+> `.env` files or service-role keys.
+>
+> Use `pnpm` for all dependency and script commands. Do not use npm or bun.
