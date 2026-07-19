@@ -38,7 +38,6 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
   const [formMessage, setFormMessage] = useState<string | null>(null);
 
   const safeNext = next?.startsWith("/") ? next : "/dashboard";
@@ -95,28 +94,6 @@ function AuthPage() {
     }
   };
 
-  const handleGoogle = async () => {
-    setGoogleLoading(true);
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo,
-          queryParams: {
-            access_type: "offline",
-            prompt: "select_account",
-          },
-        },
-      });
-      if (error) throw error;
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "Error con Google";
-      toast.error(msg);
-    } finally {
-      setGoogleLoading(false);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <div className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-6 py-10">
@@ -134,23 +111,6 @@ function AuthPage() {
                 ? "Empieza a generar planes nutricionales en un minuto."
                 : "Accede a tu panel de 7RISE Nutrition Engine."}
             </p>
-          </div>
-
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full rounded-full"
-            onClick={handleGoogle}
-            disabled={googleLoading || loading}
-          >
-            {googleLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <GoogleIcon />}
-            Continuar con Google
-          </Button>
-
-          <div className="my-5 flex items-center gap-3 text-[0.7rem] tracking-wide text-muted-foreground uppercase">
-            <span className="h-px flex-1 bg-border" />
-            o con tu correo
-            <span className="h-px flex-1 bg-border" />
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -197,11 +157,7 @@ function AuthPage() {
                 required
               />
             </div>
-            <Button
-              type="submit"
-              className="w-full rounded-full"
-              disabled={loading || googleLoading}
-            >
+            <Button type="submit" className="w-full rounded-full" disabled={loading}>
               {loading && <Loader2 className="h-4 w-4 animate-spin" />}
               {mode === "signup" ? "Crear cuenta" : "Entrar"}
             </Button>
@@ -239,28 +195,5 @@ function AuthPage() {
         </p>
       </div>
     </div>
-  );
-}
-
-function GoogleIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden>
-      <path
-        d="M22.5 12.27c0-.79-.07-1.55-.2-2.27H12v4.3h5.9a5.05 5.05 0 0 1-2.19 3.31v2.75h3.54c2.08-1.92 3.25-4.74 3.25-8.09z"
-        fill="#4285F4"
-      />
-      <path
-        d="M12 23c2.95 0 5.42-.98 7.23-2.64l-3.54-2.75c-.98.66-2.24 1.05-3.69 1.05-2.84 0-5.24-1.92-6.1-4.5H2.24v2.83A11 11 0 0 0 12 23z"
-        fill="#34A853"
-      />
-      <path
-        d="M5.9 14.16A6.62 6.62 0 0 1 5.55 12c0-.75.13-1.48.35-2.16V7.01H2.24A11 11 0 0 0 1 12c0 1.78.43 3.46 1.24 4.99l3.66-2.83z"
-        fill="#FBBC05"
-      />
-      <path
-        d="M12 5.38c1.61 0 3.05.55 4.18 1.63l3.14-3.14C17.42 2.09 14.95 1 12 1 7.7 1 3.99 3.47 2.24 7.01l3.66 2.83C6.76 7.3 9.16 5.38 12 5.38z"
-        fill="#EA4335"
-      />
-    </svg>
   );
 }
